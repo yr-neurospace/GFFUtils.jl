@@ -1,0 +1,89 @@
+---
+title: "GFFUtils Usages"
+author: "Rui Yang"
+date: last-modified
+format:
+  gfm:
+    toc: true
+    toc-depth: 6
+    toc-location: left
+    number-sections: true
+    number-depth: 6
+jupyter: julia-1.9
+---
+
+## APIs
+
+`GFFBox`, `gff_read`, `bed_write`, `show`, `tss`, `tes`, `region`, `bed_clip`, `bed_sort`.
+
+For detailed usages, type `?<name>` in the Julia REPL.
+
+## Example usages
+
+### `using` related packages
+```{julia}
+using GFFUtils
+using DataFrames
+```
+
+### Read in GFF3 file
+
+```{julia}
+filename = "E:/BaiduSyncdisk/AutoBackup/Packages/Julia/GFFUtils/exampledata/example.gff3"
+
+gffbox = gff_read(filename)
+## gffbox is an object of type GFFBox with four fields:
+# features: a DataFrame object storing features;
+# sequences: a DataFrame object storing FASTA sequences;
+# seqinfo: a DataFrame object storing chromosome ranges;
+# buildinfo: a Dict object storing various metadata.
+```
+
+```{julia}
+show(gffbox.features)
+```
+
+```{julia}
+show(gffbox.sequences)
+```
+
+```{julia}
+show(gffbox.seqinfo)
+```
+
+```{julia}
+show(gffbox.buildinfo)
+```
+
+#### Extract extended TSS regions
+
+```{julia}
+tsss = tss(gffbox, "gene", 100000000, 100)
+show(tsss)
+```
+
+#### Extract extended TES regions
+
+```{julia}
+tess = tes(gffbox, "gene", 100000000, 100)
+show(tess)
+```
+
+#### Extract extended feature body regions
+
+```{julia}
+regions = region(gffbox, "gene", 100000000, 100)
+show(regions)
+```
+
+### Sort BED file
+
+```{julia}
+df = DataFrame(
+    "seqid" => ["1", "10", "2", "contig10", "contig6", "X", "Y", "2"],
+    "start" => [100, 100, 100, 100, 100, 100, 100, 50],
+    "end" => [890, 666, 500, 1000, 300, 1000, 250, 2000])
+
+srt_df = bed_sort(df, sort_cols=["seqid", "start", "end"])  # Based on the first three columns in a BED file
+show(srt_df)
+```
