@@ -211,3 +211,57 @@ function show(io::IO, gffbox::GFFBox)
         println(k, ": ", v)
     end
 end
+
+"""
+    faidx_read(filename::AbstractString) -> DataFrame
+
+Read FASTA index file to extract the chromosome regions.
+
+**Note:** the first **two** columns are mandatory while the others are ignored.
+"""
+function faidx_read(filename::AbstractString)
+    faidx_read(open(filename))
+end
+
+"""
+    faidx_read(input::IO) -> DataFrame
+
+Read FASTA index file to extract the chromosome regions.
+
+**Note:** the first **two** columns are mandatory while the others are ignored.
+"""
+function faidx_read(input::IO)
+    df = CSV.read(input, DataFrame, header=false)
+    df_bed = select(df,
+        :Column1 => :chrom,
+        :Column1 => (x -> repeat([1], length(x))) => :chromStart,
+        :Column2 => :chromEnd)
+    srt_df = bed_sort(df_bed, sort_cols=["chrom", "chromStart", "chromEnd"])
+
+    srt_df
+end
+
+"""
+    bed_read(filenname::AbstractString, need_sort::Bool=true) -> DataFrame
+
+Read BED file with optional sorting option based on the first three columns.
+"""
+function bed_read(filenname::AbstractString; need_sort::Bool=true)
+    bed_read(open(filenname), need_sort=need_sort)
+end
+
+"""
+    bed_read(input::IO; need_sort::Bool=true) -> DataFrame
+
+Read BED file with optional sorting option based on the first three columns.
+"""
+function bed_read(input::IO; need_sort::Bool=true)
+    df = CSV.read(input, DataFrame, header=false)
+    if need_sort
+        srt_df = bed_sort(df, sort_cols=["Column1", "Column2", "Column3"])
+    else
+        srt_df = df
+    end
+
+    srt_df
+end

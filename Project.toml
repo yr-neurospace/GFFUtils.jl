@@ -1,7 +1,7 @@
 name = "GFFUtils"
 uuid = "9b58c212-aae8-41f9-86da-aeb22b670f37"
 authors = ["yangrui <2413667864@qq.com>"]
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"

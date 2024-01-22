@@ -14,13 +14,34 @@ jupyter: julia-1.9
 
 ## APIs
 
-`GFFBox`, `gff_read`, `bed_write`, `show`, `tss`, `tes`, `region`, `bed_clip`, `bed_sort`.
+-   `GFFBox`
+
+-   `gff_read`
+
+-   `bed_write`
+
+-   `show`
+
+-   `tss`
+
+-   `tes`
+
+-   `region`
+
+-   `bed_clip`
+
+-   `bed_sort`
+
+-   `faidx_read`
+
+-   `bed_read`
 
 For detailed usages, type `?<name>` in the Julia REPL.
 
 ## Example usages
 
 ### `using` related packages
+
 ```{julia}
 using GFFUtils
 using DataFrames
