@@ -79,21 +79,21 @@ show(gffbox.buildinfo)
 #### Extract extended TSS regions
 
 ```{julia}
-tsss = tss(gffbox, "gene", 100000000, 100)
+tsss = tss(gffbox, ["gene"], 100000000, 100)
 show(tsss)
 ```
 
 #### Extract extended TES regions
 
 ```{julia}
-tess = tes(gffbox, "gene", 100000000, 100)
+tess = tes(gffbox, ["gene"], 100000000, 100)
 show(tess)
 ```
 
 #### Extract extended feature body regions
 
 ```{julia}
-regions = region(gffbox, "gene", 100000000, 100)
+regions = region(gffbox, ["gene"], 100000000, 100)
 show(regions)
 ```
 

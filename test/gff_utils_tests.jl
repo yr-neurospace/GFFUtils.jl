@@ -44,7 +44,7 @@ agctttctcaagggatcaaaattatggatcattatggaatacctcggtgg
     gffbox = gff_read(IOBuffer(test_input))
 
     ## Test tss
-    tsss = tss(gffbox, "gene", 100000000, 100)
+    tsss = tss(gffbox, ["gene"], 100000000, 100)
 
     tsss_column_names = ["chrom", "chromStart", "chromEnd", "name", "score", "strand"]
     @test all(occursin.(names(tsss), tsss_column_names))
@@ -53,7 +53,7 @@ agctttctcaagggatcaaaattatggatcattatggaatacctcggtgg
     @test all(occursin.(string.(Array(tsss)), tsss_content))
 
     ## Test tes
-    tess = tes(gffbox, "gene", 100000000, 100)
+    tess = tes(gffbox, ["gene"], 100000000, 100)
 
     tess_column_names = ["chrom", "chromStart", "chromEnd", "name", "score", "strand"]
     @test all(occursin.(names(tess), tess_column_names))
@@ -62,7 +62,7 @@ agctttctcaagggatcaaaattatggatcattatggaatacctcggtgg
     @test all(occursin.(string.(Array(tess)), tess_content))
 
     ## Test region
-    regions = region(gffbox, "gene", 100000000, 100)
+    regions = region(gffbox, ["gene"], 100000000, 100)
 
     regions_column_names = ["chrom", "chromStart", "chromEnd", "name", "score", "strand"]
     @test all(occursin.(names(regions), regions_column_names))

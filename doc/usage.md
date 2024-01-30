@@ -1,6 +1,6 @@
 # GFFUtils Usages
 Rui Yang
-2024-01-22
+2024-01-30
 
 - [<span class="toc-section-number">1</span>
   <span class="header-section-number">1</span> APIs](#apis)
@@ -60,6 +60,8 @@ For detailed usages, type `?<name>` in the Julia REPL.
 using GFFUtils
 using DataFrames
 ```
+
+    [ Info: Precompiling GFFUtils [9b58c212-aae8-41f9-86da-aeb22b670f37]
 
 ### <span class="header-section-number">2.2</span> Read in GFF3 file
 
@@ -157,7 +159,7 @@ show(gffbox.buildinfo)
 #### <span class="header-section-number">2.2.1</span> Extract extended TSS regions
 
 ``` julia
-tsss = tss(gffbox, "gene", 100000000, 100)
+tsss = tss(gffbox, ["gene"], 100000000, 100)
 show(tsss)
 ```
 
@@ -171,7 +173,7 @@ show(tsss)
 #### <span class="header-section-number">2.2.2</span> Extract extended TES regions
 
 ``` julia
-tess = tes(gffbox, "gene", 100000000, 100)
+tess = tes(gffbox, ["gene"], 100000000, 100)
 show(tess)
 ```
 
@@ -185,7 +187,7 @@ show(tess)
 #### <span class="header-section-number">2.2.3</span> Extract extended feature body regions
 
 ``` julia
-regions = region(gffbox, "gene", 100000000, 100)
+regions = region(gffbox, ["gene"], 100000000, 100)
 show(regions)
 ```
 

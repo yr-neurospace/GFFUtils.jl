@@ -1,13 +1,13 @@
 """
-    tss(gffbox::GFFBox, level::AbstractString="gene", upstream::Int=0, downstream::Int=0; clip::Bool=true) -> DataFrame
+    tss(gffbox::GFFBox, level::Vector{String}=["gene"], upstream::Int=0, downstream::Int=0; clip::Bool=true) -> DataFrame
 
 Extract transcription start sites (TSSs) of `level` ("gene" by default) `upstream`bp (0bp by default) upstream and `downstream`bp (0bp by default) downstream.
 
 If `clip=true` (default), then clip extended TSS regions based on chromosome lengthes, which should have been stored in the field `seqinfo` of the object of type `GFFBox`.
 """
-function tss(gffbox::GFFBox, level::AbstractString="gene", upstream::Int=0, downstream::Int=0; clip::Bool=true)
+function tss(gffbox::GFFBox, level::Vector{String}=["gene"], upstream::Int=0, downstream::Int=0; clip::Bool=true)
     tsss = @chain gffbox.features begin
-        @subset :type .== level
+        @subset :type .∈ Ref(level)
         @select begin
             :chrom = :seqid
             $([:start, :end, :strand] => ByRow((x, y, z) -> z == '-' ? [y - downstream, y + upstream] : [x - upstream, x + downstream]) => [:chromStart, :chromEnd])
@@ -28,15 +28,15 @@ function tss(gffbox::GFFBox, level::AbstractString="gene", upstream::Int=0, down
 end
 
 """
-    tes(gffbox::GFFBox, level::AbstractString="gene", upstream::Int=0, downstream::Int=0; clip::Bool=true) -> DataFrame
+    tes(gffbox::GFFBox, level::Vector{String}=["gene"], upstream::Int=0, downstream::Int=0; clip::Bool=true) -> DataFrame
 
 Extract transcription end sites (TESs) of `level` ("gene" by default) `upstream`bp (0bp by default) upstream and `downstream`bp (0bp by default) downstream.
 
 If `clip=true` (default), then clip extended TES regions based on chromosome lengthes, which should have been stored in the field `seqinfo` of the object of type `GFFBox`.
 """
-function tes(gffbox::GFFBox, level::AbstractString="gene", upstream::Int=0, downstream::Int=0; clip::Bool=true)
+function tes(gffbox::GFFBox, level::Vector{String}=["gene"], upstream::Int=0, downstream::Int=0; clip::Bool=true)
     tess = @chain gffbox.features begin
-        @subset :type .== level
+        @subset :type .∈ Ref(level)
         @select begin
             :chrom = :seqid
             $([:start, :end, :strand] => ByRow((x, y, z) -> z == '-' ? [x - downstream, x + upstream] : [y - upstream, y + downstream]) => [:chromStart, :chromEnd])
@@ -57,15 +57,15 @@ function tes(gffbox::GFFBox, level::AbstractString="gene", upstream::Int=0, down
 end
 
 """
-    region(gffbox::GFFBox, level::AbstractString="gene", upstream::Int=0, downstream::Int=0; clip::Bool=true) -> DataFrame
+    region(gffbox::GFFBox, level::Vector{String}=["gene"], upstream::Int=0, downstream::Int=0; clip::Bool=true) -> DataFrame
 
     Extract regions of `level` ("gene" by default) `upstream`bp (0bp by default) upstream and `downstream`bp (0bp by default) downstream.
 
     If `clip=true` (default), then clip extended regions based on chromosome lengthes, which should have been stored in the field `seqinfo` of the object of type `GFFBox`.
 """
-function region(gffbox::GFFBox, level::AbstractString="gene", upstream::Int=0, downstream::Int=0; clip::Bool=true)
+function region(gffbox::GFFBox, level::Vector{String}=["gene"], upstream::Int=0, downstream::Int=0; clip::Bool=true)
     regions = @chain gffbox.features begin
-        @subset :type .== level
+        @subset :type .∈ Ref(level)
         @select begin
             :chrom = :seqid
             $([:start, :end, :strand] => ByRow((x, y, z) -> z == '-' ? [x - downstream, y + upstream] : [x - upstream, y + downstream]) => [:chromStart, :chromEnd])
